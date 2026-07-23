@@ -20,7 +20,9 @@
     - [Database: Normal Start](#database-normal-start)
     - [Database: Initial Start / Reset](#database-initial-start--reset)
   - [Generate Data](#generate-data)
+  - [DIP API Import (Current Workflow)](#dip-api-import-current-workflow)
   - [Start the Full Text Search](#start-the-full-text-search)
+  - [Search Behavior and Limits](#search-behavior-and-limits)
     - [Run Frontend with Docker](#run-frontend-with-docker)
     - [Run Frontend locally](#run-frontend-locally)
 - [Further Documentation](#further-documentation)
@@ -119,6 +121,35 @@ sh build.sh
 
 > Note: The project can also use the DIP API from the German Bundestag as a data source. A valid API key is required for this. The public key provided in the documentation is only intended as a temporary example and may need to be replaced or renewed regularly, so the key should be checked and updated from time to time.
 
+### DIP API Import (Current Workflow)
+
+The current import script for plenary protocol texts is:
+
+- `python/src/od_lib/07_database/04_import_dip_speeches.py`
+
+The script uses cursor-based pagination against the endpoint `plenarprotokoll-text`, so it can iterate through the complete available result set instead of repeating the first page.
+
+Run the import from repository root:
+
+```Shell
+./python/.venv/bin/python python/src/od_lib/07_database/04_import_dip_speeches.py \
+  --start-date 1949-01-01 \
+  --page-size 10 \
+  --max-documents 6000 \
+  --reset
+```
+
+Recommended environment variables:
+
+- `DIP_API_KEY` (required)
+- `DATABASE_URL` (optional; defaults to local postgres)
+
+Notes:
+
+- `--reset` clears `open_discourse.speeches` before re-importing.
+- Long runs print progress (`fetched_documents`, `inserted_rows`) for better observability.
+- Import time depends on API speed and machine load.
+
 ### Start the Full Text Search
 
 _Note:_ All of the previous steps have to be completed at least once for the Full Text Search to work properly.
@@ -139,6 +170,19 @@ Choose one of the following ways to start the Frontend:
 
 - run `docker-compose up -d database proxy`in the `root` folder
 - run `yarn dev` in the `frontend` folder
+
+### Search Behavior and Limits
+
+The full-text search is executed in PostgreSQL (`open_discourse.search_speeches`) across the full indexed dataset.
+
+To keep API responses stable and avoid memory issues with very large speech texts, the proxy currently returns a capped result set:
+
+- default/browse mode (no query): 200 rows
+- active search/filter mode: 200 rows
+
+With the current frontend table page size (`10`), this yields up to `20` pages per request.
+
+If you need to navigate _all_ matching results in the UI, the recommended next step is server-side pagination (`page`, `pageSize`, `totalCount`) instead of returning unbounded payloads.
 
 ## Further Documentation
 
