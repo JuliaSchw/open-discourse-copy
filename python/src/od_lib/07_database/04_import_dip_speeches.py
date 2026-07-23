@@ -86,6 +86,7 @@ def fetch_plenarprotokoll_texts(start_date, end_date, page_size, max_documents, 
     all_documents = []
     cursor = None
     payload = {"numFound": 0, "documents": []}
+    page_counter = 0
     while len(all_documents) < max_documents:
         current_params = dict(params)
         if cursor:
@@ -101,6 +102,9 @@ def fetch_plenarprotokoll_texts(start_date, end_date, page_size, max_documents, 
             break
 
         all_documents.extend(documents)
+        page_counter += 1
+        if page_counter % 25 == 0:
+            print(f"fetched_documents={len(all_documents)}")
         if len(all_documents) >= max_documents:
             break
 
@@ -189,7 +193,7 @@ def import_rows(rows, reset=False):
         if reset:
             conn.execute(text("DELETE FROM open_discourse.speeches"))
 
-        for row in rows:
+        for idx, row in enumerate(rows, start=1):
             conn.execute(
                 text(
                     """
@@ -206,6 +210,8 @@ def import_rows(rows, reset=False):
                 ),
                 row,
             )
+            if idx % 250 == 0:
+                print(f"inserted_rows={idx}")
 
     count = int(pd.read_sql("SELECT COUNT(*) AS speeches_count FROM open_discourse.speeches", engine).iloc[0, 0])
     return count
