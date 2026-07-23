@@ -86,6 +86,23 @@ app.get(
         positionShortQuery,
       },
     } = req;
+
+    const hasSearchOrFilter = [
+      contentQuery,
+      factionIdQuery,
+      fromDate,
+      toDate,
+      politicianIdQuery,
+      positionShortQuery,
+    ].some((value) => value !== undefined && String(value).trim().length > 0);
+
+    // Default view: 20 pages x 10 rows. For active search/filter we still cap
+    // the response payload to keep the proxy stable with very large speeches.
+    // PostgreSQL still evaluates the query against all rows before LIMIT.
+    const queryLimit = hasSearchOrFilter
+      ? parseInt(process.env.SEARCH_RESULT_LIMIT || "200", 10)
+      : parseInt(process.env.DEFAULT_BROWSE_LIMIT || "200", 10);
+
     const result = await pool.query(
       `SELECT id, session, electoral_term AS "electoralTerm", position_short AS "positionShort",
               date, speech_content AS "speechContent", document_url AS "documentUrl", rank,
@@ -98,7 +115,7 @@ app.get(
         contentQuery || "",
         fromDate,
         toDate,
-        process.env.QUERY_LIMIT || "50",
+        queryLimit,
       ],
     );
     res.setHeader("Content-Type", "application/json");
