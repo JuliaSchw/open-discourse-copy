@@ -47,7 +47,13 @@ BEGIN
     AND ((to_date IS NULL) OR s.date <= to_date)
   )
   ORDER BY
-    rank DESC;
+    CASE WHEN COALESCE(s.first_name, '') = 'Unbekannt' THEN 1 ELSE 0 END ASC,
+    CASE WHEN COALESCE(s.last_name, '') = '' THEN 1 ELSE 0 END ASC,
+    CASE WHEN COALESCE(f.abbreviation, '') = 'UNK' THEN 1 ELSE 0 END ASC,
+    CASE WHEN COALESCE(s.position_short, '') = '' THEN 1 ELSE 0 END ASC,
+    CASE WHEN has_content THEN rank ELSE NULL END DESC NULLS LAST,
+    s.date DESC NULLS LAST,
+    s.id DESC;
 END;
 $$
 LANGUAGE 'plpgsql'
