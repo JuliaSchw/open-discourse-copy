@@ -12,3 +12,5 @@ The python service processes and creates all of the open-discourse data
 
 - To setup the python environment, please run `sh setup.sh`
 - To build the open-discourse data, please run `sh build.sh`
+
+> Note: The current historical DIP speech import run has been stopped for now and is not being continued automatically. The current database state remains until a new import run is started.

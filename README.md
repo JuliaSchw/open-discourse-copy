@@ -149,6 +149,7 @@ Notes:
 - `--reset` clears `open_discourse.speeches` before re-importing.
 - Long runs print progress (`fetched_documents`, `inserted_rows`) for better observability.
 - Import time depends on API speed and machine load.
+- The current historical DIP import run has been stopped for now and is not being continued automatically; the last imported state remains in the database until a new run is started.
 
 ### Start the Full Text Search
 
