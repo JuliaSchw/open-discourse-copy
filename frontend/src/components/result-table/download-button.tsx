@@ -1,6 +1,6 @@
 import { SearchResultRow } from "../hooks/use-manage-data";
-import { DownloadIcon } from "@chakra-ui/icons";
 import React from "react";
+import { Download } from "react-feather";
 import DefaultButton from "../default-components/default-button";
 
 export interface DownloadButtonProps {
@@ -33,8 +33,6 @@ export const DownloadButton = ({ data, text }: DownloadButtonProps) => (
       ),
     )}`}
   >
-    <DefaultButton rightIcon={<DownloadIcon />} colorScheme="pink">
-      {text}
-    </DefaultButton>
+    <DefaultButton rightIcon={<Download size={16} />}>{text}</DefaultButton>
   </a>
 );

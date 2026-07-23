@@ -1,5 +1,4 @@
 import queryString from "query-string";
-import { Stack, Input } from "@chakra-ui/react";
 import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/router";
 import { useGetData } from "./hooks/use-get-data";
@@ -101,11 +100,11 @@ export const SearchForm: React.FC<FormParams> = () => {
     return (
       <>
         <form onSubmit={handleSubmit}>
-          <Stack spacing={{ base: 2, md: 3 }}>
-            <Input
+          <div className="flex flex-col gap-3 md:gap-4">
+            <input
               value={formParams?.contentQuery || ""}
               placeholder="Redeinhalt Durchsuchen"
-              focusBorderColor="pink.500"
+              className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-pink-500"
               onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
                 setFormParams({
                   ...formParams,
@@ -114,7 +113,7 @@ export const SearchForm: React.FC<FormParams> = () => {
               }
               type="text"
             />
-            <Stack direction={{ base: "column", md: "row" }}>
+            <div className="flex flex-col gap-3 md:flex-row">
               <DefaultSelectInput
                 rawData={convertedPoliticians}
                 onSelect={(element) => {
@@ -168,8 +167,8 @@ export const SearchForm: React.FC<FormParams> = () => {
                 }
                 placeholder="Nach Position Filtern"
               />
-            </Stack>
-            <Stack direction={{ base: "column", md: "row" }}>
+            </div>
+            <div className="flex flex-col gap-3 md:flex-row">
               <DefaultDateInput
                 prefix="Von:"
                 onChange={(event) => {
@@ -190,12 +189,11 @@ export const SearchForm: React.FC<FormParams> = () => {
                 }}
                 value={formParams?.toDate || ""}
               />
-            </Stack>
-          </Stack>
+            </div>
+          </div>
           <DefaultButton
             rightIcon={undefined}
             mt={3}
-            colorScheme="pink"
             type="submit"
             marginY="30px"
           >

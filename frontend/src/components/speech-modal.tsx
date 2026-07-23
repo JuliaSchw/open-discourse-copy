@@ -1,19 +1,6 @@
 import { SearchResultRow } from "./hooks/use-manage-data";
-import {
-  Text,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalHeader,
-  ModalContent,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-} from "@chakra-ui/react";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
 import React from "react";
 import DefaultText from "./default-components/default-text";
-import NextChakraLink from "./next-chakra-link";
 
 export interface SpeechModalProps {
   isOpen: boolean;
@@ -22,54 +9,53 @@ export interface SpeechModalProps {
 }
 
 export const SpeechModal = ({ isOpen, onClose, data }: SpeechModalProps) => {
+  if (!isOpen) return null;
+
   const datestring = data.date && new Date(data.date).toLocaleDateString();
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={"4xl"}>
-      <ModalOverlay>
-        <ModalContent>
-          <ModalHeader>
-            <DefaultText fontWeight="bold">Redebeitrag</DefaultText>
-          </ModalHeader>
-          <ModalCloseButton
-            bg="pink.500"
-            color="white"
-            _hover={{ bg: "pink.600" }}
-          />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="w-full max-w-4xl rounded-lg bg-white p-6 shadow-xl">
+        <div className="mb-4 flex items-center justify-between">
+          <DefaultText className="mb-0 font-bold">Redebeitrag</DefaultText>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded bg-pink-500 px-3 py-1 text-sm text-white"
+          >
+            ×
+          </button>
+        </div>
 
-          <ModalBody>
-            <Text mb="5" color="pink.500" fontWeight="bold">
-              {data.documentUrl && (
-                <>
-                  <NextChakraLink
-                    color="pink.500"
-                    href={data.documentUrl}
-                    isExternal
-                  >
-                    <ArrowForwardIcon mr="1" />
-                    Zum Plenarprotokoll
-                  </NextChakraLink>
-                </>
-              )}
-            </Text>
-            <Text fontWeight="bold">
-              {data.firstName} {data.lastName} ({data.abbreviation})
-            </Text>
-            <Text fontWeight="bold" mb="1">
-              {data.positionShort}
-            </Text>
-            <Text fontWeight="bold" mb="1">
-              {datestring}
-            </Text>
-            <Text whiteSpace="pre-line">{data.speechContent}</Text>
-          </ModalBody>
+        <div className="space-y-3">
+          {data.documentUrl && (
+            <a
+              className="font-bold text-pink-500"
+              href={data.documentUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Zum Plenarprotokoll
+            </a>
+          )}
+          <p className="font-bold">
+            {data.firstName} {data.lastName} ({data.abbreviation})
+          </p>
+          <p className="font-bold">{data.positionShort}</p>
+          <p className="font-bold">{datestring}</p>
+          <p className="whitespace-pre-line">{data.speechContent}</p>
+        </div>
 
-          <ModalFooter>
-            <Button colorScheme="pink" mr={3} onClick={onClose}>
-              Schließen
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </ModalOverlay>
-    </Modal>
+        <div className="mt-6 flex justify-end">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded bg-pink-500 px-4 py-2 text-sm font-semibold text-white"
+          >
+            Schließen
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };

@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Text, Input, ButtonGroup, IconButton } from "@chakra-ui/react";
-import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import React from "react";
+import { Check, X } from "react-feather";
 import { UpdateDataProps } from "./use-inline-edit";
 
 export interface EditableCellProps {
-  value: any;
-  row: { index: any };
-  column: { id: any };
+  value: string | number;
+  row: { index: number };
+  column: { id: string };
   updateData: ({ rowIndex, columnId, value }: UpdateDataProps) => void;
 }
 
@@ -24,41 +22,49 @@ export const EditableCell = ({
   const [isEditing, setIsEditing] = React.useState(false);
   const [value, setValue] = React.useState(initialValue);
 
-  const onSubmit = (newValue: string) => {
+  const onSubmit = (newValue: string | number) => {
     updateData({ value: newValue, rowIndex: row.index, columnId: id });
   };
 
   return isEditing ? (
-    <>
-      <Input
+    <div className="flex items-center gap-2">
+      <input
         value={value}
-        size="sm"
+        className="w-full min-w-[120px] rounded border border-gray-300 px-2 py-1 text-sm"
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           setValue(event.target.value)
         }
       />
-      {
-        <ButtonGroup justifyContent="center" size="xs">
-          <IconButton
-            icon={<CheckIcon />}
-            onClick={() => {
-              onSubmit(value);
-              setIsEditing(false);
-            }}
-            aria-label="Save"
-          />
-          <IconButton
-            icon={<CloseIcon />}
-            onClick={() => {
-              setValue(initialValue);
-              setIsEditing(false);
-            }}
-            aria-label="Cancel"
-          />
-        </ButtonGroup>
-      }
-    </>
+      <button
+        type="button"
+        className="rounded border border-green-300 p-1 text-green-700 hover:bg-green-50"
+        onClick={() => {
+          onSubmit(value);
+          setIsEditing(false);
+        }}
+        aria-label="Save"
+      >
+        <Check size={14} />
+      </button>
+      <button
+        type="button"
+        className="rounded border border-gray-300 p-1 text-gray-700 hover:bg-gray-100"
+        onClick={() => {
+          setValue(initialValue);
+          setIsEditing(false);
+        }}
+        aria-label="Cancel"
+      >
+        <X size={14} />
+      </button>
+    </div>
   ) : (
-    <Text onClick={() => setIsEditing(true)}>{initialValue}</Text>
+    <button
+      type="button"
+      onClick={() => setIsEditing(true)}
+      className="cursor-text text-left"
+    >
+      {initialValue}
+    </button>
   );
 };

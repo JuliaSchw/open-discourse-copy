@@ -1,31 +1,22 @@
 import React from "react";
-import { Text, TextProps } from "@chakra-ui/react";
 
-export interface DefaultTextProps extends TextProps {}
+export interface DefaultTextProps
+  extends React.HTMLAttributes<HTMLParagraphElement> {
+  className?: string;
+}
 
 export const DefaultText: React.FC<DefaultTextProps> = ({
   children,
+  className = "",
   ...props
 }) => {
   return (
-    <Text
-      fontSize={{
-        base: "sm",
-        sm: "xl",
-        md: "2xl",
-        lg: "2xl",
-        xl: "4xl",
-      }}
-      marginBottom={{
-        base: "4",
-        md: "4",
-        lg: "6",
-        xl: "8",
-      }}
+    <p
+      className={`mb-4 text-sm sm:text-xl md:text-2xl lg:text-2xl xl:text-4xl ${className}`}
       {...props}
     >
       {children}
-    </Text>
+    </p>
   );
 };
 export default DefaultText;

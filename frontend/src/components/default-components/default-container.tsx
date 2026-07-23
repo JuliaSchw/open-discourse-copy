@@ -1,29 +1,21 @@
 import React from "react";
-import { Container, ContainerProps } from "@chakra-ui/react";
 
-export interface DefaultContainerProps extends ContainerProps {
+export interface DefaultContainerProps {
   size: "s" | "m" | "l" | "xl";
+  children: React.ReactNode;
 }
-export const containerSizes = {
-  s: { base: "100vw", sm: "400px", md: "500px", lg: "850px", xl: "60vw" },
-  m: { base: "100vw", sm: "500px", md: "600px", lg: "1050px", xl: "65vw" },
-  l: { base: "100vw", sm: "500px", md: "900px", lg: "1250px", xl: "70vw" },
-  xl: { base: "100vw", sm: "500px", md: "900px", lg: "1400px", xl: "80vw" },
+
+const containerClasses = {
+  s: "w-full max-w-[400px] md:max-w-[500px] lg:max-w-[850px] xl:max-w-[60vw]",
+  m: "w-full max-w-[500px] md:max-w-[600px] lg:max-w-[1050px] xl:max-w-[65vw]",
+  l: "w-full max-w-[500px] md:max-w-[900px] lg:max-w-[1250px] xl:max-w-[70vw]",
+  xl: "w-full max-w-[500px] md:max-w-[900px] lg:max-w-[1400px] xl:max-w-[80vw]",
 };
+
 export const DefaultContainer: React.FC<DefaultContainerProps> = ({
   size,
   children,
-  ...props
 }) => {
-  return (
-    <Container
-      maxW={containerSizes[size]}
-      {...props}
-      marginLeft="auto"
-      marginRight="auto"
-    >
-      {children}
-    </Container>
-  );
+  return <div className={`mx-auto ${containerClasses[size]}`}>{children}</div>;
 };
 export default DefaultContainer;

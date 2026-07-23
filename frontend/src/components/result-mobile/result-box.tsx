@@ -1,10 +1,4 @@
 import { SearchResultRow } from "../hooks/use-manage-data";
-import {
-  useBreakpointValue,
-  Stack,
-  Button,
-  useDisclosure,
-} from "@chakra-ui/react";
 import React from "react";
 import { SpeechModal } from "../speech-modal";
 import DefaultText from "../default-components/default-text";
@@ -15,42 +9,33 @@ interface ResultBoxProps {
 }
 
 export const ResultBox = ({ data }: ResultBoxProps) => {
-  const padding = useBreakpointValue({
-    base: "2",
-    sm: "2",
-    md: "3",
-    lg: "4",
-    xl: "5",
-  });
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpen, setIsOpen] = React.useState(false);
   const datestring = data.date && new Date(data.date).toLocaleDateString();
   return (
     <>
-      <Stack
-        maxWidth={{ base: "100%", md: "47vw" }}
-        justifyContent="space-between"
-        bg="gray.100"
-        rounded="md"
-        padding={padding}
-        borderColor="gray.600"
-        backgroundColor="gray.200"
-        borderWidth="1px"
-      >
-        <DefaultText fontWeight="bold">
+      <div className="flex max-w-full flex-col justify-between rounded-md border border-gray-300 bg-gray-200 p-3 md:max-w-[47vw] md:p-4 lg:p-5 xl:p-5">
+        <DefaultText className="font-bold">
           {" "}
           {data.firstName + " " + data.lastName} ({data.abbreviation}) -{" "}
           {data.positionShort}
           {datestring ? <>, am {datestring}</> : null}:
         </DefaultText>
-        <DefaultText noOfLines={{ base: 4, md: 6 }}>
+        <DefaultText className="line-clamp-4 md:line-clamp-6">
           {data.speechContent}
         </DefaultText>
 
-        <Button colorScheme="pink" onClick={onOpen}>
+        <button
+          className="rounded bg-pink-500 px-3 py-2 text-sm font-semibold text-white"
+          onClick={() => setIsOpen(true)}
+        >
           Mehr
-        </Button>
-      </Stack>
-      <SpeechModal data={data} isOpen={isOpen} onClose={onClose} />
+        </button>
+      </div>
+      <SpeechModal
+        data={data}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </>
   );
 };

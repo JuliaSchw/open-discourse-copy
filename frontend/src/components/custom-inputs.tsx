@@ -1,11 +1,4 @@
-import {
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  InputRightElement,
-} from "@chakra-ui/react";
 import React from "react";
-import { CalendarIcon } from "@chakra-ui/icons";
 import { ChangeEvent } from "react";
 import SelectInput, { DataProps } from "./select-input";
 
@@ -30,17 +23,16 @@ export const DefaultDateInput = ({
   prefix,
 }: DefaultDateInputProps) => {
   return (
-    <InputGroup>
-      <InputLeftAddon>{prefix}</InputLeftAddon>
-      <Input
+    <div className="flex items-center rounded border border-gray-300 bg-white px-3 py-2">
+      <span className="mr-2 text-sm text-gray-700">{prefix}</span>
+      <input
         value={value}
         placeholder="YYYY-MM-DD"
         type="date"
-        focusBorderColor="pink.500"
+        className="w-full bg-transparent text-sm outline-none"
         onChange={onChange}
       />
-      <InputRightElement>{<CalendarIcon color="pink.500" />}</InputRightElement>
-    </InputGroup>
+    </div>
   );
 };
 
@@ -63,23 +55,17 @@ export const DefaultSelectInput = ({
       placeholder={placeholder}
       rawData={rawData}
       onSelect={onSelect}
-      InputProps={{
-        focusBorderColor: "pink.500",
-        type: "text",
+      inputProps={{
+        className:
+          "w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-pink-500",
       }}
-      BoxProps={{
-        backgroundColor: "white",
-        borderWidth: "1px",
-        borderColor: "gray.200",
+      boxProps={{
+        className: "rounded border border-gray-200 bg-white shadow-sm",
       }}
-      ButtonProps={{
-        textColor: "black",
-        rounded: "0px",
-        _hover: { backgroundColor: "gray.200" },
-        paddingX: "1",
+      buttonProps={{
+        className:
+          "w-full px-3 py-2 text-left text-sm text-black hover:bg-gray-100",
       }}
-      iconColor="pink.500"
-      iconHoverColor="pink.100"
       initialValue={initialValue}
     />
   );

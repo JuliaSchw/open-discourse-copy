@@ -1,5 +1,4 @@
 import { BaseTemplate } from "../templates/base-template";
-import { Flex } from "@chakra-ui/react";
 import { SearchForm } from "../components/search-form";
 import { SearchResult } from "../components/search-result";
 import React from "react";
@@ -17,12 +16,12 @@ export interface QueryParams {
 const Search: React.FC = () => {
   return (
     <BaseTemplate>
-      <Flex direction="column">
+      <div className="flex flex-col">
         <DefaultContainer size="l">
           <SearchForm />
           <SearchResult />
         </DefaultContainer>
-      </Flex>
+      </div>
     </BaseTemplate>
   );
 };

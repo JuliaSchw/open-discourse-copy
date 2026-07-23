@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Link, Text, useDisclosure, Checkbox, Flex } from "@chakra-ui/react";
 import React, { useReducer } from "react";
 import { SearchResultRow } from "../hooks/use-manage-data";
 import { DownloadButton } from "./download-button";
 import { positions } from "../search-form";
 import { SpeechModal } from "../speech-modal";
-import NextChakraLink from "../next-chakra-link";
+import NextAppLink from "../next-link";
 import { ReactTable } from "../react-table";
 
 interface ResultTableProps {
@@ -24,6 +22,31 @@ type SelectedAction = {
 
 export const convertPosition = (position: string) => {
   return positions.find((element) => element.key == position)?.label || "";
+};
+
+const SpeechCell = ({ row }: { row: Row }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  if (!(row.values.speechContent || row.values.speechContent === "")) {
+    return null;
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="font-bold text-pink-500"
+      >
+        anzeigen
+      </button>
+      <SpeechModal
+        data={row.values}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
+    </>
+  );
 };
 
 export const ResultTable = ({ data }: ResultTableProps) => {
@@ -47,10 +70,10 @@ export const ResultTable = ({ data }: ResultTableProps) => {
       Cell: ({ row }: { row: Row }) => {
         if (row.values.downloadId || row.values.downloadId === 0) {
           return (
-            <Checkbox
-              colorScheme="pink"
-              borderColor="pink.500"
-              isChecked={selected[row.values.downloadId]}
+            <input
+              type="checkbox"
+              className="h-4 w-4 rounded border-gray-300 text-pink-500 focus:ring-pink-500"
+              checked={selected[row.values.downloadId]}
               onChange={() => {
                 dispatchSelected({
                   action: "toggleSingle",
@@ -76,7 +99,7 @@ export const ResultTable = ({ data }: ResultTableProps) => {
       accessor: "date",
       Cell: ({ row }: { row: Row }) => {
         if (row.values.date) {
-          return <Text>{new Date(row.values.date).toLocaleDateString()}</Text>;
+          return <span>{new Date(row.values.date).toLocaleDateString()}</span>;
         }
         return null;
       },
@@ -87,13 +110,13 @@ export const ResultTable = ({ data }: ResultTableProps) => {
       Cell: ({ row }: { row: Row }) => {
         if (row.values.documentUrl) {
           return (
-            <NextChakraLink
+            <NextAppLink
               href={row.values.documentUrl}
               isExternal
-              fontWeight="bold"
+              className="font-bold text-pink-500"
             >
               Protokoll
-            </NextChakraLink>
+            </NextAppLink>
           );
         }
         return null;
@@ -103,22 +126,7 @@ export const ResultTable = ({ data }: ResultTableProps) => {
       Header: "Rede",
       accessor: "speechContent",
       Cell: ({ row }: { row: Row }) => {
-        const { isOpen, onOpen, onClose } = useDisclosure();
-        if (row.values.speechContent || row.values.speechContent === "") {
-          return (
-            <>
-              <Link as="button" onClick={onOpen} fontWeight="bold">
-                anzeigen
-              </Link>
-              <SpeechModal
-                data={row.values}
-                isOpen={isOpen}
-                onClose={onClose}
-              />
-            </>
-          );
-        }
-        return null;
+        return <SpeechCell row={row} />;
       },
     },
   ];
@@ -137,10 +145,8 @@ export const ResultTable = ({ data }: ResultTableProps) => {
           };
         })}
         pageSize={10}
-        // @ts-ignore
-        colors={{ evenColor: "gray.200", tableHeadColor: "gray.200" }}
       />
-      <Flex justifyContent="space-between">
+      <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <DownloadButton data={data} text={"Alle Ergebnisse Herunterladen"} />
         {Object.entries(selected).some(([_id, state]) => state) ? (
           <DownloadButton
@@ -148,7 +154,7 @@ export const ResultTable = ({ data }: ResultTableProps) => {
             text={"Ausgewählte Ergebnisse Herunterladen"}
           />
         ) : null}
-      </Flex>
+      </div>
     </>
   );
 };

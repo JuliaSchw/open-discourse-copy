@@ -1,19 +1,5 @@
 import React, { useState } from "react";
-import {
-  Input,
-  Box,
-  Button,
-  Text,
-  InputGroup,
-  InputRightElement,
-  ResponsiveValue,
-  BoxProps,
-  InputProps,
-  ButtonProps,
-  TextProps,
-} from "@chakra-ui/react";
-import { SearchIcon, CloseIcon } from "@chakra-ui/icons";
-import * as CSS from "csstype";
+import { Search, X } from "react-feather";
 
 export interface DataProps {
   label: string;
@@ -26,13 +12,9 @@ export interface SelectInputProps {
   width?: string;
   first?: number;
   onSelect?: (element: DataProps | undefined) => void;
-  BoxProps?: BoxProps;
-  InputProps?: InputProps;
-  ButtonProps?: ButtonProps;
-  TextProps?: TextProps;
-  iconColor?: ResponsiveValue<CSS.Property.BackgroundImage>;
-  iconHoverColor?: ResponsiveValue<CSS.Property.BackgroundImage>;
-  boxHoverColor?: ResponsiveValue<CSS.Property.BackgroundImage>;
+  boxProps?: { className?: string };
+  inputProps?: { className?: string };
+  buttonProps?: { className?: string };
   initialValue?: DataProps;
 }
 
@@ -41,13 +23,9 @@ export const SelectInput = ({
   placeholder,
   rawData,
   onSelect,
-  BoxProps,
-  ButtonProps,
-  InputProps,
-  TextProps,
-  iconColor,
-  iconHoverColor,
-  boxHoverColor,
+  boxProps,
+  buttonProps,
+  inputProps,
   initialValue,
   first = 50,
 }: SelectInputProps): JSX.Element => {
@@ -59,8 +37,9 @@ export const SelectInput = ({
   const [input, setInput] = useState(initialValue?.label || "");
 
   return (
-    <Box position="relative" display="inline-block" width={width}>
-      <InputGroup
+    <div className="relative inline-block" style={{ width }}>
+      <div
+        className="relative"
         onFocus={() => setFocusedInput(true)}
         onBlur={() => {
           setTimeout(() => {
@@ -69,50 +48,28 @@ export const SelectInput = ({
           }, 150);
         }}
       >
-        <Input
-          {...InputProps}
+        <input
           placeholder={placeholder}
           onChange={(e) => {
             setInput(e.target.value);
             setSelected(null);
           }}
           value={selected ? selected.label : input}
-          width="100%"
+          className={`w-full rounded border border-gray-300 bg-white px-3 py-2 pr-10 text-sm outline-none focus:border-pink-500 ${inputProps?.className || ""}`}
         />
-        <InputRightElement>
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
           {selected ? (
-            <CloseIcon
-              boxSize="25px"
-              color={iconColor}
-              borderRadius="0.5em"
-              padding="4px"
-              cursor="pointer"
-              _hover={{ backgroundColor: iconHoverColor }}
-              onClick={() => {
-                setInput("");
-                setSelected(null);
-                if (onSelect) onSelect(undefined);
-              }}
-            />
+            <X size={18} className="text-gray-500" />
           ) : (
-            <SearchIcon color={iconColor} />
+            <Search size={18} className="text-pink-500" />
           )}
-        </InputRightElement>
-      </InputGroup>
+        </div>
+      </div>
       {focusedInput || focusedButton ? (
-        <Box
-          {...BoxProps}
-          position="absolute"
-          width="100%"
-          maxHeight="200px"
-          overflowY="auto"
-          marginTop="6px"
-          shadow="sm"
-          rounded="4px"
-          zIndex="20"
+        <div
+          className={`absolute z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-gray-200 bg-white shadow-sm ${boxProps?.className || ""}`}
           onFocus={() => setFocusedButton(true)}
           onBlur={() => setFocusedButton(false)}
-          _focus={{ outline: "None" }}
         >
           {rawData
             .filter(
@@ -122,12 +79,9 @@ export const SelectInput = ({
             )
             .slice(0, first)
             .map((element) => (
-              <Button
-                _hover={{ backgroundColor: boxHoverColor }}
-                {...ButtonProps}
-                variant="ghost"
-                width="100%"
-                textAlign="left"
+              <button
+                type="button"
+                className={`w-full px-3 py-2 text-left text-sm hover:bg-gray-100 ${buttonProps?.className || ""}`}
                 onClick={() => {
                   setInput(element.label);
                   setSelected(element);
@@ -137,19 +91,12 @@ export const SelectInput = ({
                 }}
                 key={element.key}
               >
-                <Text
-                  fontWeight="normal"
-                  {...TextProps}
-                  paddingLeft="10px"
-                  width="100%"
-                >
-                  {element.label}
-                </Text>
-              </Button>
+                {element.label}
+              </button>
             ))}
-        </Box>
+        </div>
       ) : null}
-    </Box>
+    </div>
   );
 };
 

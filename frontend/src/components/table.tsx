@@ -1,73 +1,91 @@
 import React from "react";
-import { BoxProps, Box } from "@chakra-ui/react";
 
-export const Table: React.FC<BoxProps> = ({ children, ...rest }) => {
+type GenericProps<T> = React.PropsWithChildren<T> & {
+  className?: string;
+  bg?: string;
+};
+
+const mapBg = (bg?: string) => {
+  if (bg === "gray.100") return "bg-gray-100";
+  if (bg === "gray.200") return "bg-gray-200";
+  return "";
+};
+
+export const Table: React.FC<
+  GenericProps<React.TableHTMLAttributes<HTMLTableElement>>
+> = ({ children, className, ...rest }) => {
   return (
-    <Box
-      table-layout="auto"
-      border-collapse="collapse"
-      style={{ tableLayout: "fixed", width: "100%" }}
-      {...{ as: "table" }}
+    <table
+      className={`w-full table-fixed border-collapse ${className || ""}`}
       {...rest}
     >
       {children}
-    </Box>
-  );
-};
-export const Thead: React.FC<BoxProps> = ({ children, ...rest }) => {
-  return (
-    <Box p={4} textAlign="left" {...{ as: "thead" }} {...rest}>
-      {children}
-    </Box>
+    </table>
   );
 };
 
-export const Tbody: React.FC<BoxProps> = ({ children, ...rest }) => {
+export const Thead: React.FC<
+  GenericProps<React.HTMLAttributes<HTMLTableSectionElement>>
+> = ({ children, className, ...rest }) => {
   return (
-    <Box p={4} {...{ as: "tbody" }} {...rest}>
+    <thead className={className} {...rest}>
       {children}
-    </Box>
+    </thead>
   );
 };
 
-export const Tfoot: React.FC<BoxProps> = ({ children, ...rest }) => {
+export const Tbody: React.FC<
+  GenericProps<React.HTMLAttributes<HTMLTableSectionElement>>
+> = ({ children, className, ...rest }) => {
   return (
-    <Box p={4} {...{ as: "tfoot" }} {...rest}>
+    <tbody className={className} {...rest}>
       {children}
-    </Box>
+    </tbody>
   );
 };
 
-export const Th: React.FC<BoxProps> = ({ children, ...rest }) => {
+export const Tfoot: React.FC<
+  GenericProps<React.HTMLAttributes<HTMLTableSectionElement>>
+> = ({ children, className, ...rest }) => {
   return (
-    <Box
-      padding={4}
-      borderBottom="1px"
-      borderBottomColor="gray.200"
-      {...{ as: "th" }}
+    <tfoot className={className} {...rest}>
+      {children}
+    </tfoot>
+  );
+};
+
+export const Th: React.FC<
+  GenericProps<React.ThHTMLAttributes<HTMLTableCellElement>>
+> = ({ children, className, bg, ...rest }) => {
+  return (
+    <th
+      className={`border-b border-gray-200 p-4 text-left ${mapBg(bg)} ${className || ""}`}
       {...rest}
     >
       {children}
-    </Box>
+    </th>
   );
 };
 
-export const Tr: React.FC<BoxProps> = ({ children, ...rest }) => {
+export const Tr: React.FC<
+  GenericProps<React.HTMLAttributes<HTMLTableRowElement>>
+> = ({ children, className, bg, ...rest }) => {
   return (
-    <Box my={1} {...{ as: "tr" }} {...rest}>
+    <tr className={`${mapBg(bg)} ${className || ""}`} {...rest}>
       {children}
-    </Box>
+    </tr>
   );
 };
 
-export const Td: React.FC<BoxProps> = ({ children, ...rest }) => (
-  <Box
-    p={4}
-    borderBottom="1px"
-    borderBottomColor="gray.200"
-    {...{ as: "td" }}
-    {...rest}
-  >
-    {children}
-  </Box>
-);
+export const Td: React.FC<
+  GenericProps<React.TdHTMLAttributes<HTMLTableCellElement>>
+> = ({ children, className, ...rest }) => {
+  return (
+    <td
+      className={`border-b border-gray-200 p-4 align-top ${className || ""}`}
+      {...rest}
+    >
+      {children}
+    </td>
+  );
+};

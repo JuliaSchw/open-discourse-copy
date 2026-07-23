@@ -1,38 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { IconButton } from "@chakra-ui/react";
 type TableIconButtonProps = {
-  icon: any;
+  icon?: React.ReactNode;
   onClick:
     | ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void)
     | undefined;
   isDisabled: boolean;
-  colorScheme?: string;
 };
 export const TableIconButton: React.FC<TableIconButtonProps> = ({
   icon,
   onClick,
   isDisabled,
   children,
-  colorScheme,
   ...rest
 }) => {
   return (
-    <IconButton
-      size="sm"
+    <button
+      type="button"
       {...rest}
-      icon={icon}
-      borderWidth={1}
       onClick={onClick}
-      colorScheme={colorScheme}
-      isDisabled={isDisabled}
+      disabled={isDisabled}
       aria-label="Table Icon button"
+      className="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
     >
-      {children}
-    </IconButton>
+      {icon || children}
+    </button>
   );
-};
-
-TableIconButton.defaultProps = {
-  colorScheme: "gray",
 };

@@ -1,21 +1,11 @@
 import React from "react";
-import { Flex, Heading } from "@chakra-ui/react";
 
 export const Header: React.FC = () => {
   return (
-    <Flex
-      as="nav"
-      align="center"
-      justify="space-between"
-      wrap="wrap"
-      padding="1.5rem"
-      bg="pink.500"
-      color="white"
-      width="100%"
-    >
-      <Heading as="h1" size="lg" letterSpacing={"-.1rem"}>
+    <nav className="flex w-full items-center justify-between flex-wrap bg-pink-500 px-6 py-6 text-white">
+      <h1 className="text-xl font-semibold tracking-tight">
         Open Discourse Volltextsuche
-      </Heading>
-    </Flex>
+      </h1>
+    </nav>
   );
 };

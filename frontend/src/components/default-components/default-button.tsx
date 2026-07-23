@@ -1,27 +1,33 @@
 import React from "react";
-import { Button, ButtonProps } from "@chakra-ui/react";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
 
-export interface DefaultButtonProps extends ButtonProps {
-  colorScheme: string;
+export interface DefaultButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  marginY?: string;
+  mt?: number;
+  rightIcon?: React.ReactNode;
 }
+
 export const DefaultButton: React.FC<DefaultButtonProps> = ({
   children,
-  colorScheme,
+  className = "",
+  rightIcon,
+  mt,
+  marginY,
   ...props
 }) => {
   return (
-    <Button
-      colorScheme={colorScheme}
-      size={"md"}
-      fontSize={{ xl: "2xl" }}
-      padding={{ xl: "8" }}
-      textTransform="uppercase"
-      rightIcon={<ArrowForwardIcon />}
+    <button
+      className={`inline-flex items-center rounded bg-pink-500 px-4 py-2 text-sm font-semibold uppercase text-white transition hover:bg-pink-600 ${className}`}
+      style={{ marginTop: mt ? `${mt}px` : marginY ? marginY : "0.75rem" }}
       {...props}
     >
-      {children}
-    </Button>
+      <span>{children}</span>
+      {rightIcon ? (
+        <span className="ml-2">{rightIcon}</span>
+      ) : (
+        <span className="ml-2">→</span>
+      )}
+    </button>
   );
 };
 export default DefaultButton;

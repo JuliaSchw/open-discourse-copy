@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { SearchResultRow } from "../hooks/use-manage-data";
 import { ResultBox } from "./result-box";
-import { SimpleGrid } from "@chakra-ui/react";
-import {
-  Stack,
-  Flex,
-  Text,
-  useBreakpointValue,
-  IconButton,
-} from "@chakra-ui/react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -29,11 +21,8 @@ interface PageState {
 
 type TableIconButtonProps = {
   icon: React.ReactElement;
-  onClick:
-    | ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void)
-    | undefined;
+  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   isDisabled: boolean;
-  colorScheme?: string;
   children?: React.ReactNode;
 };
 export const TableIconButton: React.FC<TableIconButtonProps> = ({
@@ -41,27 +30,19 @@ export const TableIconButton: React.FC<TableIconButtonProps> = ({
   onClick,
   isDisabled,
   children,
-  colorScheme,
-  ...rest
 }) => {
   return (
-    <IconButton
-      size="sm"
-      icon={icon}
-      borderWidth={1}
+    <button
+      type="button"
       onClick={onClick}
-      colorScheme={colorScheme}
-      isDisabled={isDisabled}
+      disabled={isDisabled}
       aria-label="Table Icon button"
-      {...rest}
+      className="ml-1 rounded border border-gray-300 bg-white p-2 text-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
     >
+      {icon}
       {children}
-    </IconButton>
+    </button>
   );
-};
-
-TableIconButton.defaultProps = {
-  colorScheme: "gray",
 };
 
 export const ResultMobile = ({
@@ -73,13 +54,10 @@ export const ResultMobile = ({
     pageSize: initialPageSize || 10,
   });
   const pageCount = Math.ceil(data.length / pageState.pageSize);
-  const isDesktop = useBreakpointValue({
-    base: false,
-    lg: true,
-  });
+  const isDesktop = typeof window !== "undefined" && window.innerWidth >= 1024;
   return (
-    <Stack>
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={{ base: "4", md: "8" }}>
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
         {data
           .slice(
             pageState.pageIndex * pageState.pageSize,
@@ -98,15 +76,9 @@ export const ResultMobile = ({
               key={row.id}
             />
           ))}
-      </SimpleGrid>
-      <Flex
-        paddingY="2rem"
-        justifyContent="space-between"
-        flexDirection="row"
-        overflowX="hidden"
-        overflowY="hidden"
-      >
-        <Flex flexDirection="row">
+      </div>
+      <div className="flex flex-row justify-between overflow-hidden py-8">
+        <div className="flex flex-row">
           <TableIconButton
             onClick={() => setPageState({ ...pageState, pageIndex: 0 })}
             isDisabled={pageState.pageIndex <= 0 || pageCount == 0}
@@ -122,14 +94,14 @@ export const ResultMobile = ({
             }
             icon={<ChevronLeft size={20} />}
           />
-        </Flex>
-        <Flex justifyContent="center" alignItems="center">
-          <Text mr={4}>
+        </div>
+        <div className="flex items-center justify-center">
+          <span className="mr-4">
             Page{" "}
             <strong>
               {pageState.pageIndex + 1} of {pageCount}
             </strong>{" "}
-          </Text>
+          </span>
           {isDesktop && (
             <select
               value={pageState.pageSize}
@@ -147,8 +119,8 @@ export const ResultMobile = ({
               ))}
             </select>
           )}
-        </Flex>
-        <Flex flexDirection="row">
+        </div>
+        <div className="flex flex-row">
           <TableIconButton
             isDisabled={pageState.pageIndex >= pageCount - 1}
             onClick={() =>
@@ -166,8 +138,8 @@ export const ResultMobile = ({
             isDisabled={pageState.pageIndex >= pageCount - 1}
             icon={<ChevronsRight size={20} />}
           />
-        </Flex>
-      </Flex>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 };
