@@ -29,8 +29,7 @@ export const useManageData = () => {
       setError(undefined);
 
       const baseUrl =
-        process.env.NEXT_PUBLIC_PROXY_ENDPOINT ||
-        (await fetch("/proxy-host").then((r) => r.text()));
+        process.env.NEXT_PUBLIC_PROXY_ENDPOINT || "http://localhost:5300";
 
       const searchResult = await fetch(baseUrl + "/" + window.location.search, {
         mode: "cors",

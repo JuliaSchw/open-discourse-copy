@@ -117,6 +117,8 @@ This script is just a pipeline executing all scripts in `src`. You can also manu
 sh build.sh
 ```
 
+> Note: The project can also use the DIP API from the German Bundestag as a data source. A valid API key is required for this. The public key provided in the documentation is only intended as a temporary example and may need to be replaced or renewed regularly, so the key should be checked and updated from time to time.
+
 ### Start the Full Text Search
 
 _Note:_ All of the previous steps have to be completed at least once for the Full Text Search to work properly.

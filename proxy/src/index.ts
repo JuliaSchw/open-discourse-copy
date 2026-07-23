@@ -1,4 +1,3 @@
-import RateLimit from "express-rate-limit";
 import { Pool, PoolClient } from "pg";
 import express = require("express");
 import * as puppeteer from "puppeteer";
@@ -16,13 +15,6 @@ const zip = <T, L>(array1: T[], array2: L[]): [T, L][] =>
 const app = express();
 
 app.use(cors());
-
-app.use(
-  RateLimit({
-    windowMs: 1 * 60 * 1000,
-    max: 60,
-  }),
-);
 
 const pool = new Pool({
   user: process.env.POSTGRES_DB_USER || "postgres",

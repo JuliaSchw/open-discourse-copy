@@ -56,7 +56,7 @@ export const SelectInput = ({
   const [selected, setSelected] = useState<DataProps | null>(
     initialValue || null,
   );
-  const [input, setInput] = useState(initialValue?.label);
+  const [input, setInput] = useState(initialValue?.label || "");
 
   return (
     <Box position="relative" display="inline-block" width={width}>

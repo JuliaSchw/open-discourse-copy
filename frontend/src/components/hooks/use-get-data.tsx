@@ -9,8 +9,7 @@ export const useGetData = <T,>(
   const fetchQuery = () => {
     (async () => {
       const baseUrl =
-        process.env.NEXT_PUBLIC_PROXY_ENDPOINT ||
-        (await fetch("/proxy-host").then((r) => r.text()));
+        process.env.NEXT_PUBLIC_PROXY_ENDPOINT || "http://localhost:5300";
 
       console.log("baseUrl", baseUrl);
 
