@@ -17,15 +17,17 @@ export const DefaultButton: React.FC<DefaultButtonProps> = ({
 }) => {
   return (
     <button
-      className={`inline-flex items-center rounded bg-pink-500 px-4 py-2 text-sm font-semibold uppercase text-white transition hover:bg-pink-600 ${className}`}
+      className={`btn btn-primary inline-flex items-center rounded-md text-sm font-semibold uppercase tracking-wide ${className}`}
       style={{ marginTop: mt ? `${mt}px` : marginY ? marginY : "0.75rem" }}
       {...props}
     >
       <span>{children}</span>
-      {rightIcon ? (
+      {rightIcon === undefined ? (
+        <span className="ml-2">→</span>
+      ) : rightIcon ? (
         <span className="ml-2">{rightIcon}</span>
       ) : (
-        <span className="ml-2">→</span>
+        <></>
       )}
     </button>
   );

@@ -55,7 +55,7 @@ export const SelectInput = ({
             setSelected(null);
           }}
           value={selected ? selected.label : input}
-          className={`w-full rounded border border-gray-300 bg-white px-3 py-2 pr-10 text-sm outline-none focus:border-pink-500 ${inputProps?.className || ""}`}
+          className={`input input-bordered w-full pr-10 ${inputProps?.className || ""}`}
         />
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
           {selected ? (
@@ -67,7 +67,7 @@ export const SelectInput = ({
       </div>
       {focusedInput || focusedButton ? (
         <div
-          className={`absolute z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-gray-200 bg-white shadow-sm ${boxProps?.className || ""}`}
+          className={`absolute z-20 mt-1 max-h-52 w-full overflow-y-auto rounded-box border border-base-300 bg-base-100 shadow ${boxProps?.className || ""}`}
           onFocus={() => setFocusedButton(true)}
           onBlur={() => setFocusedButton(false)}
         >
@@ -81,7 +81,7 @@ export const SelectInput = ({
             .map((element) => (
               <button
                 type="button"
-                className={`w-full px-3 py-2 text-left text-sm hover:bg-gray-100 ${buttonProps?.className || ""}`}
+                className={`btn btn-ghost btn-sm h-auto w-full justify-start px-3 py-2 text-left normal-case ${buttonProps?.className || ""}`}
                 onClick={() => {
                   setInput(element.label);
                   setSelected(element);

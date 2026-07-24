@@ -91,20 +91,20 @@ export const ReactTable = <D extends {}>({
         <table
           {...(getTableProps() as any)}
           data-testid="react-table"
-          className="w-full table-fixed border-collapse"
+          className="table table-zebra w-full"
         >
           <thead>
             {headerGroups.map((headerGroup: any, outerIndex: number) => (
               <tr {...headerGroup.getHeaderGroupProps()} key={outerIndex}>
                 {headerGroup.headers.map((column: any, innerIndex: number) => (
                   <th
-                    className="border-b border-gray-200 bg-gray-100 p-4 text-left"
+                    className="bg-base-200 px-4 py-3 text-left"
                     {...column.getHeaderProps()}
                     {...column.getSortByToggleProps()}
                     key={innerIndex}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-bold">
+                      <span className="text-sm font-bold text-base-content">
                         {column.render("Header")}
                       </span>
                       {column.isSorted ? (
@@ -142,7 +142,7 @@ export const ReactTable = <D extends {}>({
                 prepareRow(row) || (
                   <tr
                     style={onRowClick ? { cursor: "pointer" } : undefined}
-                    className={row.id === selectedId ? "bg-gray-100" : ""}
+                    className={row.id === selectedId ? "bg-base-200" : ""}
                     onClick={() => onRowClick && onRowClick(row)}
                     {...row.getRowProps()}
                     data-testid="table-row"
@@ -151,7 +151,7 @@ export const ReactTable = <D extends {}>({
                     {row.cells.map((cell: any, innerIndex: number) => {
                       return (
                         <td
-                          className="border-b border-gray-200 p-4 align-top"
+                          className="border-b border-base-300 px-4 py-3 align-top text-sm text-base-content"
                           {...cell.getCellProps()}
                           data-testid="react-table-cell"
                           key={innerIndex}
@@ -167,7 +167,7 @@ export const ReactTable = <D extends {}>({
         </table>
       </div>
 
-      <div className="flex flex-row items-center justify-between overflow-hidden border-t border-gray-200 py-8">
+      <div className="flex flex-row items-center justify-between overflow-hidden border-t border-base-300 py-6">
         <div className="flex flex-row gap-2">
           <TableIconButton
             onClick={() => gotoPage(0)}
@@ -181,7 +181,7 @@ export const ReactTable = <D extends {}>({
           />
         </div>
         <div className="flex items-center justify-center gap-4">
-          <span>
+          <span className="text-sm text-base-content">
             Page{" "}
             <strong>
               {pageIndex + 1} of {pageOptions.length}
@@ -189,7 +189,7 @@ export const ReactTable = <D extends {}>({
           </span>
           {!isTabletOrMobile && (
             <select
-              className="rounded border border-gray-300 px-2 py-1"
+              className="select select-bordered select-sm"
               value={pageSize}
               onChange={(e) => {
                 setPageSize(Number(e.target.value));

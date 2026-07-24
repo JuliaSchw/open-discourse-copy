@@ -20,7 +20,7 @@ export const TableIconButton: React.FC<TableIconButtonProps> = ({
       onClick={onClick}
       disabled={isDisabled}
       aria-label="Table Icon button"
-      className="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+      className="btn btn-sm btn-square btn-outline"
     >
       {icon || children}
     </button>

@@ -29,6 +29,7 @@
     "@types/react-responsive": "8.0.2",
     "@types/react-table": "7.0.19",
     "autoprefixer": "^10.5.4",
+    "daisyui": "^5.7.0",
     "eslint": "^9.39.5",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^15.15.0",

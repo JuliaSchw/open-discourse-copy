@@ -23,13 +23,15 @@ export const DefaultDateInput = ({
   prefix,
 }: DefaultDateInputProps) => {
   return (
-    <div className="flex items-center rounded border border-gray-300 bg-white px-3 py-2">
-      <span className="mr-2 text-sm text-gray-700">{prefix}</span>
+    <div className="join w-full">
+      <span className="join-item inline-flex min-w-[58px] items-center border border-base-300 bg-base-200 px-3 text-sm font-semibold text-base-content/80">
+        {prefix}
+      </span>
       <input
         value={value}
         placeholder="YYYY-MM-DD"
         type="date"
-        className="w-full bg-transparent text-sm outline-none"
+        className="input input-bordered join-item w-full"
         onChange={onChange}
       />
     </div>
@@ -56,15 +58,15 @@ export const DefaultSelectInput = ({
       rawData={rawData}
       onSelect={onSelect}
       inputProps={{
-        className:
-          "w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-pink-500",
+        className: "input input-bordered w-full pr-10",
       }}
       boxProps={{
-        className: "rounded border border-gray-200 bg-white shadow-sm",
+        className:
+          "menu rounded-box border border-base-300 bg-base-100 p-1 shadow",
       }}
       buttonProps={{
         className:
-          "w-full px-3 py-2 text-left text-sm text-black hover:bg-gray-100",
+          "rounded-btn w-full px-3 py-2 text-left text-sm hover:bg-base-200",
       }}
       initialValue={initialValue}
     />

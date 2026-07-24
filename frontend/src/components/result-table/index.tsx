@@ -36,7 +36,7 @@ const SpeechCell = ({ row }: { row: Row }) => {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="font-bold text-pink-500"
+        className="font-bold text-gray-800 hover:text-pink-500"
       >
         anzeigen
       </button>
@@ -113,7 +113,7 @@ export const ResultTable = ({ data }: ResultTableProps) => {
             <NextAppLink
               href={row.values.documentUrl}
               isExternal
-              className="font-bold text-pink-500"
+              className="font-bold text-gray-800 hover:text-pink-500"
             >
               Protokoll
             </NextAppLink>
@@ -139,7 +139,7 @@ export const ResultTable = ({ data }: ResultTableProps) => {
             ...element,
             abbreviation:
               element.abbreviation == "not found"
-                ? "Ohne Zurodnung"
+                ? "Ohne Zuordnung"
                 : element.abbreviation,
             positionShort: convertPosition(element.positionShort),
           };

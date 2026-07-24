@@ -15,5 +15,9 @@ export const SearchResult = (): React.ReactElement | null => {
     return <ErrorToast error={{ message: error.message, name: "Error" }} />;
   }
 
-  return data ? <ResultTable data={data} /> : null;
+  if (!data) {
+    return null;
+  }
+
+  return <ResultTable data={data} />;
 };

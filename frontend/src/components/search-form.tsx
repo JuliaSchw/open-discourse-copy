@@ -98,109 +98,119 @@ export const SearchForm: React.FC<FormParams> = () => {
 
   if (politicians && factions) {
     return (
-      <>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-3 md:gap-4">
-            <input
-              value={formParams?.contentQuery || ""}
-              placeholder="Redeinhalt Durchsuchen"
-              className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-pink-500"
-              onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <div className="form-control">
+          <input
+            value={formParams?.contentQuery || ""}
+            placeholder="Redeinhalt Durchsuchen"
+            className="input input-bordered w-full"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
+              setFormParams({
+                ...formParams,
+                contentQuery: event.target.value,
+              })
+            }
+            type="text"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+          <div>
+            <DefaultSelectInput
+              rawData={convertedPoliticians}
+              onSelect={(element) => {
                 setFormParams({
                   ...formParams,
-                  contentQuery: event.target.value,
-                })
+                  politicianIdQuery: element?.key,
+                });
+              }}
+              initialValue={
+                formParams.politicianIdQuery
+                  ? convertedPoliticians.find(
+                      (politician) =>
+                        politician.key == formParams.politicianIdQuery,
+                    )
+                  : undefined
               }
-              type="text"
+              placeholder="Nach Politiker_Innen Filtern"
             />
-            <div className="flex flex-col gap-3 md:flex-row">
-              <DefaultSelectInput
-                rawData={convertedPoliticians}
-                onSelect={(element) => {
-                  setFormParams({
-                    ...formParams,
-                    politicianIdQuery: element?.key,
-                  });
-                }}
-                initialValue={
-                  formParams.politicianIdQuery
-                    ? convertedPoliticians.find(
-                        (politician) =>
-                          politician.key == formParams.politicianIdQuery,
-                      )
-                    : undefined
-                }
-                placeholder="Nach Politiker_Innen Filtern"
-              />
-              <DefaultSelectInput
-                rawData={convertedFactions}
-                onSelect={(element) => {
-                  setFormParams({
-                    ...formParams,
-                    factionIdQuery: element?.key,
-                  });
-                }}
-                initialValue={
-                  formParams.factionIdQuery
-                    ? convertedFactions.find(
-                        (faction) => faction.key == formParams.factionIdQuery,
-                      )
-                    : undefined
-                }
-                placeholder="Nach Fraktion Filtern"
-              />
-              <DefaultSelectInput
-                rawData={positions}
-                onSelect={(element) => {
-                  setFormParams({
-                    ...formParams,
-                    positionShortQuery: element?.key,
-                  });
-                }}
-                initialValue={
-                  formParams.positionShortQuery
-                    ? positions.find(
-                        (position) =>
-                          position.key == formParams.positionShortQuery,
-                      )
-                    : undefined
-                }
-                placeholder="Nach Position Filtern"
-              />
-            </div>
-            <div className="flex flex-col gap-3 md:flex-row">
-              <DefaultDateInput
-                prefix="Von:"
-                onChange={(event) => {
-                  setFormParams({
-                    ...formParams,
-                    fromDate: event.target.value,
-                  });
-                }}
-                value={formParams?.fromDate || ""}
-              />
-              <DefaultDateInput
-                prefix="Bis:"
-                onChange={(event) => {
-                  setFormParams({
-                    ...formParams,
-                    toDate: event.target.value,
-                  });
-                }}
-                value={formParams?.toDate || ""}
-              />
-            </div>
           </div>
+          <div>
+            <DefaultSelectInput
+              rawData={convertedFactions}
+              onSelect={(element) => {
+                setFormParams({
+                  ...formParams,
+                  factionIdQuery: element?.key,
+                });
+              }}
+              initialValue={
+                formParams.factionIdQuery
+                  ? convertedFactions.find(
+                      (faction) => faction.key == formParams.factionIdQuery,
+                    )
+                  : undefined
+              }
+              placeholder="Nach Fraktion Filtern"
+            />
+          </div>
+          <div>
+            <DefaultSelectInput
+              rawData={positions}
+              onSelect={(element) => {
+                setFormParams({
+                  ...formParams,
+                  positionShortQuery: element?.key,
+                });
+              }}
+              initialValue={
+                formParams.positionShortQuery
+                  ? positions.find(
+                      (position) =>
+                        position.key == formParams.positionShortQuery,
+                    )
+                  : undefined
+              }
+              placeholder="Nach Position Filtern"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+          <DefaultDateInput
+            prefix="Von:"
+            onChange={(event) => {
+              setFormParams({
+                ...formParams,
+                fromDate: event.target.value,
+              });
+            }}
+            value={formParams?.fromDate || ""}
+          />
+          <DefaultDateInput
+            prefix="Bis:"
+            onChange={(event) => {
+              setFormParams({
+                ...formParams,
+                toDate: event.target.value,
+              });
+            }}
+            value={formParams?.toDate || ""}
+          />
+        </div>
+
+        <div className="pt-2">
           <DefaultButton
-            rightIcon={undefined}
-            mt={3}
+            rightIcon={null}
+            mt={0}
             type="submit"
-            marginY="30px"
+            marginY="0"
+            className="px-6"
           >
             Suchen
           </DefaultButton>
-        </form>
-      </>
+        </div>
+      </form>
     );
   }
   return null;
